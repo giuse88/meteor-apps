@@ -38,7 +38,7 @@ if (Meteor.isClient) {
   };
 
   Template.categories.events({
-      'click #btnNewCat #btnDelCat': function (event, target) {
+      'click #btnNewCat': function (event, target) {
           Session.set('adding_category', true);
           Meteor.flush();
           target.find("#add-category").focus();
@@ -52,11 +52,19 @@ if (Meteor.isClient) {
             }
           }
       }, 
-      'focusout #add-category': function(e,t){
+      'focusout #add-category' : function(e,t){
           Session.set('adding_category',false);
       },
       'click .category' : function(e, t) {
           Session.set('current_list', this._id); 
+      }, 
+      'dblclick .category' : function(e, t) {
+          var list = lists.findOne({_id : this._id});
+          var elements = list.items ? list.items.length : 0 ;
+          if ((elements > 0 && confirm('There are elements in this list. Are you sure you want to delete it?')) || 
+              elements <= 0 ) { 
+            lists.remove(this._id);
+          }
       }
     });
 
@@ -109,7 +117,6 @@ if (Meteor.isClient) {
   };
 
   function updateLendee(list_id,item_name,lendee_name){
-    console.log(item_name, lendee_name);
     var l = lists.findOne({"_id":list_id , "items.Name":item_name}); 
     if (l&&l.items) { 
     for (var i = 0; i<l.items.length; i++) { 
@@ -140,7 +147,6 @@ Template.list.events({
    removeItem(Session.get('current_list'),e.target.id);
  },
  'click .lendee' : function(e,t){
-   console.log(this);
    Session.set('lendee_input',this.Name);
    Meteor.flush();
    focusText(t.find("#edit_lendee"),this.LentTo);
