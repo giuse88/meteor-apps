@@ -2,8 +2,10 @@ lists = new Meteor.Collection("Lists");
 
 if (Meteor.isClient) {
 
-    var  focusText =  function ($element) {
+    var  focusText =  function ($element, val) {
         $element.focus();
+        $element.value = val ? val : "";
+        $element.select();
     }
  /*  Template.hello.greeting = function () {
     return "The list";
@@ -36,7 +38,7 @@ if (Meteor.isClient) {
   };
 
   Template.categories.events({
-      'click #btnNewCat': function (event, target) {
+      'click #btnNewCat #btnDelCat': function (event, target) {
           Session.set('adding_category', true);
           Meteor.flush();
           target.find("#add-category").focus();
@@ -59,25 +61,20 @@ if (Meteor.isClient) {
     });
 
   Template.list.items = function () {
-  if (Session.equals('current_list',null))
-    return null;
-  else {
-    var cats = lists.findOne({_id:Session.get('current_list')});
-    if (cats&&cats.items)
-    {
+    if (Session.equals('current_list',null))
+      return null;
+    else {
+      var cats = lists.findOne({_id:Session.get('current_list')});
+      if (cats&&cats.items) {
       for(var i = 0; i<cats.items.length;i++) {
-        var d = cats.items[i]; d.Lendee = d.LentTo ? d.LentTo :
-        "free"; d.LendClass = d.LentTo ?
-        "label-important" : "label-success";
+        var d = cats.items[i]; d.Lendee = d.LentTo ? d.LentTo : "free"; 
+        d.LendClass = d.LentTo ?  "label-danger" : "label-success"; 
       }
-    return cats.items;
+      return cats.items;
+      }
     }
-  }
   };
   
-
-  
-
   Template.list.list_selected = function() {
     return ((Session.get('current_list')!=null) &&
     (!Session.equals('current_list',null)));
@@ -98,6 +95,31 @@ if (Meteor.isClient) {
     return (Session.equals('lendee_input',this.Name));
   };
 
+  function removeItem(list_id,item_name){ 
+    if (!item_name&&!list_id) 
+      return; 
+    lists.update({_id:list_id}, 
+    {$pull:{items:{Name:item_name}}}); 
+  }
+
+  function addItem(list_id,item_name){
+    if (!item_name&&!list_id)
+        return; 
+    lists.update({_id:list_id}, {$addToSet:{items:{Name:item_name}}}); 
+  };
+
+  function updateLendee(list_id,item_name,lendee_name){
+    console.log(item_name, lendee_name);
+    var l = lists.findOne({"_id":list_id , "items.Name":item_name}); 
+    if (l&&l.items) { 
+    for (var i = 0; i<l.items.length; i++) { 
+      if (l.items[i].Name === item_name) {
+         l.items[i].LentTo = lendee_name;
+      } 
+    }
+    lists.update({"_id":list_id},{$set:{"items":l.items}}); 
+    } 
+  };
 
 Template.list.events({
   'click #btnAddItem': function (e,t){
@@ -105,7 +127,7 @@ Template.list.events({
     Meteor.flush();
     focusText(t.find("#item_to_add"));
   },
-'keyup #item_to_add': function (e,t){
+  'keyup #item_to_add': function (e,t){
     if (e.which === 13) {
       addItem(Session.get('current_list'),e.target.value);
       Session.set('list_adding',false);
@@ -118,22 +140,25 @@ Template.list.events({
    removeItem(Session.get('current_list'),e.target.id);
  },
  'click .lendee' : function(e,t){
+   console.log(this);
    Session.set('lendee_input',this.Name);
    Meteor.flush();
    focusText(t.find("#edit_lendee"),this.LentTo);
  },
+ 'focusout #edit_lendee': function(e,t){
+    Session.set('lendee_input',null);
+ },
  'keyup #edit_lendee': function (e,t){
   if (e.which === 13) {
-    updateLendee(Session.get('current_list'),this.Name,
-    e.target.value);
+    updateLendee(Session.get('current_list'),this.Name, e.target.value);
     Session.set('lendee_input',null);
   }
   if (e.which === 27) {
     Session.set('lendee_input',null);
+    }
   }
- }
+  });
 
-});
 
 }
 
