@@ -1,0 +1,20 @@
+<template name="login"> 
+    <div class="container">
+      <div class="flat-form">
+        <ul class="tabs">
+          <li id="signIn"> <a class="active" href="#login">Login</a> </li>
+          <li id="signUp"> <a href="#register">Register</a> </li>
+          <li id="resetPassword"> <a href="#reset">Reset Password</a> </li>
+        </ul>
+    {{#if isLoginSelected }}
+      {{> signIn }}  
+    {{ else }} 
+      {{#if isRegisterSelected }} 
+        {{> signUp }}
+      {{ else }} 
+        {{> resetPassword }}
+      {{/if }}
+    {{/if}}
+    </div>
+    </div>
+</template> 

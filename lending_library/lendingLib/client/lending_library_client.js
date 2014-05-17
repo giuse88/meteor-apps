@@ -1,31 +1,19 @@
-lists = new Meteor.Collection("Lists");
-
-if (Meteor.isClient) {
-
-    var  focusText =  function ($element, val) {
+  var  focusText =  function ($element, val) {
         $element.focus();
         $element.value = val ? val : "";
         $element.select();
-    }
- /*  Template.hello.greeting = function () {
-    return "The list";
-  };
-
-  Template.hello.events({
-    'click input': function () {
-      // template data, if any, is available in 'this'
-      if (typeof console !== 'undefined')
-        console.log("You pressed the button");
-    }
-  });
-
-  */
+  }
 
   Meteor.subscribe("Categories");
   Meteor.autosubscribe(function() {
      Meteor.subscribe("listdetails",
      Session.get('current_list'));
   }); 
+
+  Accounts.ui.config({
+     passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
+  });
+
   Template.categories.lists = function() 
   {
     return lists.find({}, { sort : { Category : 1}});  
@@ -53,7 +41,7 @@ if (Meteor.isClient) {
           if (e.which === 13) {
             var catVal = String(e.target.value || "");
             if (catVal) {
-              lists.insert({Category:catVal});
+              lists.insert({Category:catVal,owner: this.userId});
               Session.set('adding_category', false);
             }
           }
@@ -169,23 +157,5 @@ Template.list.events({
     Session.set('lendee_input',null);
     }
   }
-  });
+ });
 
-
-}
-
-if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
-  });
-
-  /* Publish category list */
-  Meteor.publish("Categories", function() {
-     return lists.find({},{fields:{Category:1}});
-  });
-  /* Publish items in a category */
-  Meteor.publish("listdetails", function(category_id){
-     return lists.find({_id:category_id});
-  });
-  
-}

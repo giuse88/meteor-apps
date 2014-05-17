@@ -1,9 +1,8 @@
-<head>
-  <title>lending_library</title>
-</head>
-
-<body>
-    <!--  {{> hello}} -->
+<template name="library"> 
+<!--  {{> hello}} -->
+  <div style="float: left; margin-left:20px;">
+     {{> loginButtons}}
+￼ </div>
   <div id="lendlib"> 
     <h1 class="text-center"> My stuff </h1>  
     <div id="category-container"> 
@@ -13,7 +12,7 @@
         {{> list }}
     </div> 
   </div> 
-</body>
+</template> 
 
 <template name="hello">
   <h2>Lending Library</h2>

@@ -20,8 +20,9 @@
  background-color:#fc6; 
  color:#630; 
 } 
-#lending_item{
+.lending_item{
  vertical-align:middle; 
+ background-color: cornsilk;
 } 
 #add_item{
  padding-left:5px; 
