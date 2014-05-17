@@ -20,6 +20,12 @@ if (Meteor.isClient) {
   });
 
   */
+
+  Meteor.subscribe("Categories");
+  Meteor.autosubscribe(function() {
+     Meteor.subscribe("listdetails",
+     Session.get('current_list'));
+  }); 
   Template.categories.lists = function() 
   {
     return lists.find({}, { sort : { Category : 1}});  
@@ -172,4 +178,14 @@ if (Meteor.isServer) {
   Meteor.startup(function () {
     // code to run on server at startup
   });
+
+  /* Publish category list */
+  Meteor.publish("Categories", function() {
+     return lists.find({},{fields:{Category:1}});
+  });
+  /* Publish items in a category */
+  Meteor.publish("listdetails", function(category_id){
+     return lists.find({_id:category_id});
+  });
+  
 }
