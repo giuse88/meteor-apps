@@ -23,14 +23,14 @@ Template.login.isResetPasswordSelected = function() {
 };
 
 Template.login.events({
-  'click li' : function(event,t){
+  'click a' : function(event,t){
     var $target = $(event.currentTarget);
     var selectedTab = $target.attr('id');
     console.log("tab selected " + selectedTab);
     if (selectedTab) {
         Session.set('tab', selectedTab); 
         $('.active').removeClass("active");
-        $target.children('a').addClass("active");
+        $target.addClass("active");
     }
     // update view 
     Meteor.flush();
