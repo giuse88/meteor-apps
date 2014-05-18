@@ -1,0 +1,12 @@
+<template name="loginLayout"> 
+    <div class="container">
+      <div class="flat-form">
+        <ul class="tabs">
+          <li> <a id="login"          class="{{#if isRouteActive 'login' }}active{{/if}}"         href="{{ pathFor 'login' }}">Login</a> </li>
+          <li> <a id="registration"   class="{{#if isRouteActive 'registration' }}active{{/if}}"  href="{{ pathFor 'registration'  }}">Register</a> </li>
+          <li> <a id="resetPassword"  class="{{#if isRouteActive 'resetPassword' }}active{{/if}}" href="{{ pathFor 'resetPassword' }}">Reset Password</a> </li>
+        </ul>
+        {{> yield }}
+    </div>
+    </div>
+</template> 

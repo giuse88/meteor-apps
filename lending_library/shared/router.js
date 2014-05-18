@@ -1,9 +1,9 @@
-Router.configure();
+/*
+ * Router.configure();
 
 Router.map(function() {
   this.route('index', {path: '/'});
   this.route('library');
-  this.route('login');
 });
 
 var mustBeSignedIn = function(pause) {
@@ -21,4 +21,6 @@ var goToDashboard = function(pause) {
 };
 
 Router.onBeforeAction(mustBeSignedIn, {except: ['login']});
-Router.onBeforeAction(goToDashboard, {only: ['index, library']});
+Router.onBeforeAction(goToDashboard, {only: ['index']});
+
+*/
