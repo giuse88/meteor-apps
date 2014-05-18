@@ -18,6 +18,7 @@ Template.login.events({
           } else {
             // Success. Account has been created and the user
             // has logged in successfully. 
+            Router.go('library');
             console.log("Registration success");
           }
         });
