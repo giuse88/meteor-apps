@@ -28,20 +28,7 @@ Router.map( function () {
               data : {}
             }
     );
-
-  this.route( 'logout', 
-            {
-              path : '/logout', 
-              onBeforeAction : function(pause){
-                  Meteor.logout();
-                  Router.go('/login');
-                  pause(); 
-              }
-            }
-   );
-  // this should be removed from here 
   this.route('library');
-  // 
 });
 
 var mustBeSignedIn = function(pause) {
@@ -51,14 +38,5 @@ var mustBeSignedIn = function(pause) {
   }
 };
 
-var goToDashboard = function(pause) {
-  if (Meteor.user()) {
-    Router.go('library');
-    pause();
-  }
-};
-
-Router.onBeforeAction(goToDashboard, {only:['login'] });
 Router.onBeforeAction(mustBeSignedIn, {except: ['login', 'registration', 'resetPassword']});
-
 

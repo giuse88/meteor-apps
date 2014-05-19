@@ -21,7 +21,7 @@ Template.login.events({
         } else {
           // The user has been logged in.
           console.log("user logged in");
-          Router.go('library');
+          Router.go('/library');
         }
       });
          return false; 

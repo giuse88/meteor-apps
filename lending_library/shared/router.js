@@ -24,3 +24,5 @@ Router.onBeforeAction(mustBeSignedIn, {except: ['login', 'registration', 'resetP
 Router.onBeforeAction(goToDashboard, {only: ['index']});
 
 */ 
+
+Router.configure({ layoutTemplate: 'layout' });

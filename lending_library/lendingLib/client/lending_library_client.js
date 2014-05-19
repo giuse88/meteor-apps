@@ -10,10 +10,6 @@
      Session.get('current_list'));
   }); 
 
-  Accounts.ui.config({
-     passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
-  });
-
   Template.categories.lists = function() 
   {
     return lists.find({}, { sort : { Category : 1}});  
@@ -41,7 +37,8 @@
           if (e.which === 13) {
             var catVal = String(e.target.value || "");
             if (catVal) {
-              lists.insert({Category:catVal,owner: this.userId});
+              console.log("user : " +  Meteor.userId());
+              lists.insert({Category:catVal,owner: Meteor.userId()});
               Session.set('adding_category', false);
             }
           }
@@ -49,9 +46,11 @@
       'focusout #add-category' : function(e,t){
           Session.set('adding_category',false);
       },
+ 
       'click .category' : function(e, t) {
           Session.set('current_list', this._id); 
       }, 
+
       'dblclick .category' : function(e, t) {
           var list = lists.findOne({_id : this._id});
           var elements = list.items ? list.items.length : 0 ;
@@ -107,6 +106,7 @@
   function addItem(list_id,item_name){
     if (!item_name&&!list_id)
         return; 
+    console.log(list_id, item_name);
     lists.update({_id:list_id}, {$addToSet:{items:{Name:item_name}}}); 
   };
 
