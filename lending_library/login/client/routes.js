@@ -1,18 +1,11 @@
-Router.LOGING = 'login';
-Router.REGISTRATION = 'registration';
-Router.PASSWORD_RESET = 'passwordReset';
-Router.LAYOUT = 'loginLayout';
-
 Router.map( function () {
   this.route( 'login',  
             { 
               path : '/login',  
               layoutTemplate: 'loginLayout',
-              yieldTemplates :  { 
-                login : { to : 'login'} 
-                },
+              yieldTemplate : 'login',
               data : { 
-                appName : "Squiddy", 
+                appName : "Fady", 
                 welcomeMessage  : "Welcome to the most awesome app ever seen." 
               }
             }
@@ -22,9 +15,7 @@ Router.map( function () {
             { 
               path : '/registration',  
               layoutTemplate: 'loginLayout',
-              yieldTemplates :  { 
-                registration : { to : 'registration'} 
-                },
+              yieldTemplate:'registration',
               data : {}
             }
     );
@@ -33,10 +24,19 @@ Router.map( function () {
             { 
               path : '/resetPassword',  
               layoutTemplate: 'loginLayout',
-              yieldTemplates :  { 
-                resetPassword : { to : 'resetPassword'} 
-                },
+              yieldTemplate : 'resetPassword',
               data : {}
             }
     );
+  this.route('library');
 });
+
+var mustBeSignedIn = function(pause) {
+  if (!(Meteor.user() || Meteor.loggingIn())) {
+    Router.go('login');
+    pause();
+  }
+};
+
+Router.onBeforeAction(mustBeSignedIn, {except: ['login', 'registration', 'resetPassword']});
+

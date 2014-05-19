@@ -20,7 +20,7 @@ var goToDashboard = function(pause) {
   }
 };
 
-Router.onBeforeAction(mustBeSignedIn, {except: ['login']});
+Router.onBeforeAction(mustBeSignedIn, {except: ['login', 'registration', 'resetPassword']});
 Router.onBeforeAction(goToDashboard, {only: ['index']});
 
-*/
+*/ 
