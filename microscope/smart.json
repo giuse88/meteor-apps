@@ -1,3 +1,6 @@
 {
-  "packages": {}
+  "packages": {
+    "iron-router": {},
+    "spin": {}
+  }
 }
