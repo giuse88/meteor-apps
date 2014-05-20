@@ -8,3 +8,4 @@ accounts-base
 accounts-password
 email
 accounts-ui
+iron-router
