@@ -27,8 +27,10 @@ Router.map( function () {
               yieldTemplate : 'resetPassword',
               data : {}
             }
-    );
+  );
+
   this.route('library');
+
 });
 
 var mustBeSignedIn = function(pause) {

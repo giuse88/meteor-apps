@@ -19,7 +19,7 @@ Session.setDefault('editing_listname', null);
 // When editing todo text, ID of the todo
 Session.setDefault('editing_itemname', null);
 
-// Subscribe to 'lists' collection on startup.
+// Subscribe to 'list' collection on startup.
 // Select a list once data has arrived.
 var listsHandle = Meteor.subscribe('lists', function () {
   if (!Session.get('list_id')) {
